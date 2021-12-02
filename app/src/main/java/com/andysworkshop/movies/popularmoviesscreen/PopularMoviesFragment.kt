@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.andysworkshop.movies.R
 import com.andysworkshop.movies.databinding.FragmentPopularMoviesBinding
+import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
 /**
@@ -28,6 +29,11 @@ class PopularMoviesFragment : Fragment() {
 
     private val viewModel: PopularMoviesViewModel by viewModels { viewModelFactory }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidSupportInjection.inject(this)
+        super.onCreate(savedInstanceState)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,6 +50,11 @@ class PopularMoviesFragment : Fragment() {
         binding.buttonFirst.setOnClickListener {
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.fragmentResumed()
     }
 
     override fun onDestroyView() {
