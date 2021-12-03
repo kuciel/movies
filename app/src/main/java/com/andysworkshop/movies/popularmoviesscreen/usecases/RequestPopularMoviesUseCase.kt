@@ -6,7 +6,7 @@ import javax.inject.Inject
 class RequestPopularMoviesUseCase @Inject constructor(
     private val store: IStore
 ) : IRequestPopularMoviesUseCase {
-    override suspend fun invoke() {
-        store.requestPopularMoviesImages()
+    override suspend fun invoke(maxNumberOfMovies: Int) {
+        store.requestPopularMoviesImages(maxNumberOfMovies)
     }
 }

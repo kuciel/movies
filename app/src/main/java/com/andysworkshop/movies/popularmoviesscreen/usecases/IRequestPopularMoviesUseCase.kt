@@ -1,5 +1,5 @@
 package com.andysworkshop.movies.popularmoviesscreen.usecases
 
 interface IRequestPopularMoviesUseCase {
-    suspend fun invoke()
+    suspend fun invoke(maxNumberOfMovies: Int)
 }

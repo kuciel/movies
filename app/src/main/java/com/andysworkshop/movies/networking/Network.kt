@@ -2,25 +2,26 @@ package com.andysworkshop.movies.networking
 
 import android.util.Log
 import com.andysworkshop.movies.domain.data.MovieData
+import com.andysworkshop.movies.domain.data.PopularMoviesRequestResult
 import javax.inject.Inject
 
 class Network @Inject constructor(
-    private val retrofitApiInterface: IRetrofitApiInterface): INetwork {
+    private val retrofitApiInterface: IRetrofitApiInterface
+) : INetwork {
 
-    override suspend fun requestPopularMoviesImages() {
-        val result: List<MovieData>
-        try {
-            result = retrofitApiInterface.getPopularMovies().results.map {
-                MovieData(
-                    id = it.id,
-                    popularity = it.popularity,
-                    posterPath = it.posterPath
-                )
-            }
-            println("Acquired popular movies data: $result")
-        }
-        catch (error: Throwable) {
-            println("Error loading popular movies data: ${error.message}")
+    override suspend fun requestPopularMoviesImages(): PopularMoviesRequestResult {
+        return try {
+            PopularMoviesRequestResult.Success(
+                retrofitApiInterface.getPopularMovies().results.map {
+                    MovieData(
+                        id = it.id,
+                        popularity = it.popularity,
+                        posterPath = it.posterPath
+                    )
+                }
+            )
+        } catch (error: Throwable) {
+            PopularMoviesRequestResult.Error(error.message ?: "Unknown error")
         }
     }
 
