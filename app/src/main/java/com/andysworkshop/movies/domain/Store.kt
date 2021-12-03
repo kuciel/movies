@@ -7,7 +7,7 @@ import javax.inject.Inject
 class Store @Inject constructor(
     private val requestPopularMoviesUseCase: IRequestPopularMoviesUseCase
 ) : IStore {
-    override fun requestPopularMoviesImages() {
+    override suspend fun requestPopularMoviesImages() {
         Log.d(TAG, "Requested popular movies from store")
         requestPopularMoviesUseCase.invoke()
     }

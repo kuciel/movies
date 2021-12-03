@@ -7,7 +7,7 @@ import javax.inject.Inject
 class RequestPopularMoviesUseCase @Inject constructor(
     private val network: INetwork
 ) : IRequestPopularMoviesUseCase {
-    override fun invoke() {
+    override suspend fun invoke() {
         network.requestPopularMoviesImages()
     }
 }
