@@ -7,10 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
-import com.andysworkshop.movies.R
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.andysworkshop.movies.databinding.FragmentPopularMoviesBinding
+import com.andysworkshop.movies.popularmoviesscreen.data.PopularMoviesUIData
 import dagger.android.support.AndroidSupportInjection
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 /**
@@ -18,16 +21,19 @@ import javax.inject.Inject
  */
 class PopularMoviesFragment : Fragment() {
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
     private var _binding: FragmentPopularMoviesBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
     private val viewModel: PopularMoviesViewModel by viewModels { viewModelFactory }
+
+    private val moviesListData: MutableList<PopularMoviesUIData> = mutableListOf()
+    private val moviesViewAdapter = MoviesRecyclerAdapter(moviesListData)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidSupportInjection.inject(this)
@@ -40,25 +46,30 @@ class PopularMoviesFragment : Fragment() {
     ): View? {
 
         _binding = FragmentPopularMoviesBinding.inflate(inflater, container, false)
-        return binding.root
-
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        binding.buttonFirst.setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
-        }
+        val view = binding.root
+        view.layoutManager = LinearLayoutManager(context)
+        view.adapter = moviesViewAdapter
+        return view
     }
 
     override fun onResume() {
         super.onResume()
+        observeViewModelMoviesData()
         viewModel.fragmentResumed()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun observeViewModelMoviesData() {
+        viewModel.moviesSharedFlow.onEach {
+            moviesListData.clear()
+            moviesListData.addAll(it)
+            moviesViewAdapter.notifyDataSetChanged()
+        }
+            .launchIn(lifecycleScope)
+
     }
 }

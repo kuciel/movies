@@ -1,6 +1,5 @@
 package com.andysworkshop.movies.networking
 
-import android.util.Log
 import com.andysworkshop.movies.domain.data.MovieData
 import com.andysworkshop.movies.domain.data.PopularMoviesRequestResult
 import javax.inject.Inject
@@ -16,7 +15,7 @@ class Network @Inject constructor(
                     MovieData(
                         id = it.id,
                         popularity = it.popularity,
-                        posterPath = it.posterPath
+                        posterPath = POSTER_BASE_PATH + it.posterPath
                     )
                 }
             )
@@ -26,6 +25,6 @@ class Network @Inject constructor(
     }
 
     companion object {
-        private const val TAG = "Network"
+        private const val POSTER_BASE_PATH = "https://image.tmdb.org/t/p/original"
     }
 }
