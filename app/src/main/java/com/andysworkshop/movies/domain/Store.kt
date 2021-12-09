@@ -1,6 +1,7 @@
 package com.andysworkshop.movies.domain
 
 import android.util.Log
+import com.andysworkshop.movies.domain.data.MovieDetailRequestResult
 import com.andysworkshop.movies.domain.data.PopularMoviesRequestResult
 import com.andysworkshop.movies.domain.usecases.IRequestMovieDetailStoreUseCase
 import com.andysworkshop.movies.domain.usecases.IRequestPopularMoviesStoreUseCase
@@ -19,10 +20,20 @@ class Store @Inject constructor(
         onBufferOverflow = BufferOverflow.DROP_OLDEST
     )
 
+    private val _movieDetailsData = MutableSharedFlow<MovieDetailRequestResult>(
+        extraBufferCapacity = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
+
     override val popularMoviesData: SharedFlow<PopularMoviesRequestResult>
         get() {
             return _popularMoviesData
         }
+
+    override val moviesDetailData: SharedFlow<MovieDetailRequestResult>
+    get() {
+        return _movieDetailsData
+    }
 
     override suspend fun requestPopularMoviesImages(maxNumberOfMovies: Int) {
         Log.d(TAG, "Requested popular movies from store")
@@ -46,6 +57,7 @@ class Store @Inject constructor(
         println("Store got movie detail request: $movieId")
         val movieDetails =  requestMovieDetailsUseCase.invoke(movieId)
         println("Store got movie detail result: $movieDetails")
+        _movieDetailsData.tryEmit(movieDetails)
     }
 
     companion object {

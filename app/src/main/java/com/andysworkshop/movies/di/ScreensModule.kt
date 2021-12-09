@@ -1,7 +1,9 @@
 package com.andysworkshop.movies.di
 
 import androidx.lifecycle.ViewModelProvider
+import com.andysworkshop.movies.moviedetailsscreen.usecases.IObserverMovieDetailUseCase
 import com.andysworkshop.movies.moviedetailsscreen.usecases.IRequestMovieDetailUseCase
+import com.andysworkshop.movies.moviedetailsscreen.usecases.ObserverMovieDetailUseCase
 import com.andysworkshop.movies.moviedetailsscreen.usecases.RequestMovieDetailsUseCase
 import com.andysworkshop.movies.popularmoviesscreen.usecases.IRequestPopularMoviesUseCase
 import com.andysworkshop.movies.popularmoviesscreen.usecases.IObservePopularMoviesDataUseCase
@@ -14,12 +16,14 @@ class ScreensModule {
     fun provideViewModelFactory (
         requestPopularMoviesUseCase: IRequestPopularMoviesUseCase,
         observePopularMoviesDataUseCase: IObservePopularMoviesDataUseCase,
-        requestMovieDetailUseCase: IRequestMovieDetailUseCase
+        requestMovieDetailUseCase: IRequestMovieDetailUseCase,
+        observerMovieDetailUseCase: IObserverMovieDetailUseCase
     ): ViewModelProvider.Factory {
         return MoviesViewModelFactory(
             requestPopularMoviesUseCase,
             observePopularMoviesDataUseCase,
-            requestMovieDetailUseCase
+            requestMovieDetailUseCase,
+            observerMovieDetailUseCase
         )
     }
 }

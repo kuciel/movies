@@ -43,6 +43,7 @@ class PopularMoviesFragment : Fragment() {
         AndroidSupportInjection.inject(this)
         super.onCreate(savedInstanceState)
 
+        viewModel.fragmentCreate()
         observeViewModelMoviesData()
         observeNavigationEvent()
     }

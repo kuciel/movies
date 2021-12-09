@@ -7,11 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.andysworkshop.movies.R
 import com.andysworkshop.movies.databinding.FragmentMovieDetailsBinding
 import com.andysworkshop.movies.popularmoviesscreen.PopularMoviesViewModel
 import dagger.android.support.AndroidSupportInjection
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 /**
@@ -51,9 +54,16 @@ class MovieDetailFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AndroidSupportInjection.inject(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.movieDetailSharedFlow.onEach {
+            println("Movie detail fragment got detail data: $it")
+        }.launchIn(lifecycleScope)
 
         arguments?.let {
-            viewModel.onCreateFragment(
+            viewModel.onFragmentResumed(
                 MovieDetailFragmentArgs.fromBundle(it).movieId
             )
         }
