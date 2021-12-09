@@ -43,14 +43,6 @@ class MovieDetailFragment : Fragment() {
 
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        binding.buttonSecond.setOnClickListener {
-            findNavController().popBackStack()
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AndroidSupportInjection.inject(this)
@@ -60,6 +52,8 @@ class MovieDetailFragment : Fragment() {
         super.onResume()
         viewModel.movieDetailSharedFlow.onEach {
             println("Movie detail fragment got detail data: $it")
+            binding.titleTextview.text = it.title
+            binding.overviewTextview.text = it.overview
         }.launchIn(lifecycleScope)
 
         arguments?.let {
