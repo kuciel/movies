@@ -40,6 +40,10 @@ class Store @Inject constructor(
         }
     }
 
+    override suspend fun requestMovieDetail(movieId: String) {
+        println("Store got movie detail request: $movieId")
+    }
+
     companion object {
         private const val TAG = "Store"
     }

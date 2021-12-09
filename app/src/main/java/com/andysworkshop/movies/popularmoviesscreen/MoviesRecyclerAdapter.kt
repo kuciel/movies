@@ -36,7 +36,7 @@ class MoviesRecyclerAdapter(
 
         init {
             itemView.setOnClickListener {
-                onItemClick(values[adapterPosition].posterPath)
+                onItemClick(values[adapterPosition].id)
             }
         }
     }

@@ -5,14 +5,24 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.andysworkshop.movies.R
 import com.andysworkshop.movies.databinding.FragmentMovieDetailsBinding
+import com.andysworkshop.movies.popularmoviesscreen.PopularMoviesViewModel
+import dagger.android.support.AndroidSupportInjection
+import javax.inject.Inject
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
 class MovieDetailFragment : Fragment() {
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    private val viewModel: MovieDetailViewModel by viewModels { viewModelFactory }
 
     private var _binding: FragmentMovieDetailsBinding? = null
 
@@ -35,6 +45,17 @@ class MovieDetailFragment : Fragment() {
 
         binding.buttonSecond.setOnClickListener {
             findNavController().popBackStack()
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        AndroidSupportInjection.inject(this)
+
+        arguments?.let {
+            viewModel.onCreateFragment(
+                MovieDetailFragmentArgs.fromBundle(it).movieId
+            )
         }
     }
 

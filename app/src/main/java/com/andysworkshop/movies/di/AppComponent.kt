@@ -3,6 +3,8 @@ package com.andysworkshop.movies.di
 import android.app.Application
 import com.andysworkshop.movies.MoviesApplication
 import com.andysworkshop.movies.domain.di.StoreModule
+import com.andysworkshop.movies.moviedetailsscreen.di.MovieDetailFragmentModule
+import com.andysworkshop.movies.moviedetailsscreen.di.MovieDetailUseCasesModule
 import com.andysworkshop.movies.networking.di.NetworkModule
 import com.andysworkshop.movies.networking.di.NetworkUseCasesModule
 import com.andysworkshop.movies.popularmoviesscreen.di.PopularMoviesFragmentModule
@@ -18,9 +20,11 @@ import javax.inject.Singleton
     modules = [
         AndroidInjectionModule::class,
         PopularMoviesFragmentModule::class,
+        MovieDetailFragmentModule::class,
         ScreensModule::class,
         StoreModule::class,
         PopularMoviesUseCasesModule::class,
+        MovieDetailUseCasesModule::class,
         NetworkUseCasesModule::class,
         NetworkModule::class
     ]

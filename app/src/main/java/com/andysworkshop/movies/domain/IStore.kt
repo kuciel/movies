@@ -7,4 +7,6 @@ interface IStore {
     val popularMoviesData: SharedFlow<PopularMoviesRequestResult>
 
     suspend fun requestPopularMoviesImages(maxNumberOfMovies: Int)
+
+    suspend fun requestMovieDetail(movieId: String)
 }

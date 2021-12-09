@@ -12,8 +12,13 @@
         tools:layout="@layout/fragment_popular_movies">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/MovieDetailFragment" />
+            android:id="@+id/action_PopularMoviesFragment_to_MovieDetailFragment"
+            app:destination="@id/MovieDetailFragment">
+            <argument
+                android:name="movieId"
+                app:argType="string" />
+        </action>
+
     </fragment>
     <fragment
         android:id="@+id/MovieDetailFragment"
@@ -24,5 +29,9 @@
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/PopularMoviesFragment" />
+
+        <argument
+            android:name="movieId"
+            app:argType="string" />
     </fragment>
 </navigation>
