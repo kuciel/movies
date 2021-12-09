@@ -39,9 +39,8 @@ class Store @Inject constructor(
         Log.d(TAG, "Requested popular movies from store")
         when (val popularMoviesResult = requestPopularMoviesUseCase.invoke()) {
             is PopularMoviesRequestResult.Success -> {
-                popularMoviesResult.value.sortedBy { it.popularity }
                 _popularMoviesData.tryEmit(PopularMoviesRequestResult.Success(
-                    popularMoviesResult.value.sortedBy { it.popularity }
+                    popularMoviesResult.value.sortedByDescending { it.popularity.toDouble() }
                         .subList(0, maxNumberOfMovies)).also {
                             println("Popular movies sorted and limited: $it")
                         }
