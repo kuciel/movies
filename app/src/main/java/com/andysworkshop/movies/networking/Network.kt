@@ -1,6 +1,9 @@
 package com.andysworkshop.movies.networking
 
+import android.graphics.Movie
 import com.andysworkshop.movies.domain.data.MovieData
+import com.andysworkshop.movies.domain.data.MovieDetailData
+import com.andysworkshop.movies.domain.data.MovieDetailRequestResult
 import com.andysworkshop.movies.domain.data.PopularMoviesRequestResult
 import javax.inject.Inject
 
@@ -21,6 +24,20 @@ class Network @Inject constructor(
             )
         } catch (error: Throwable) {
             PopularMoviesRequestResult.Error(error.message ?: "Unknown error")
+        }
+    }
+
+    override suspend fun requestMovieDetail(movieId: String): MovieDetailRequestResult {
+        return try {
+            val movieDetailsDto = retrofitApiInterface.getMovieDetails(movieId)
+            MovieDetailRequestResult.Success(
+                MovieDetailData(
+                    overview = movieDetailsDto.overview,
+                    title = movieDetailsDto.title
+                )
+            )
+        } catch (error: Throwable) {
+            MovieDetailRequestResult.Error(error.message ?: "Unknown error")
         }
     }
 
