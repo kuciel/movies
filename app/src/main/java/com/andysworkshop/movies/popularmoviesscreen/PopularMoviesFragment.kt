@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.andysworkshop.movies.R
 import com.andysworkshop.movies.databinding.FragmentPopularMoviesBinding
 import com.andysworkshop.movies.popularmoviesscreen.data.PopularMoviesUIData
 import dagger.android.support.AndroidSupportInjection
@@ -33,11 +35,16 @@ class PopularMoviesFragment : Fragment() {
     private val viewModel: PopularMoviesViewModel by viewModels { viewModelFactory }
 
     private val moviesListData: MutableList<PopularMoviesUIData> = mutableListOf()
-    private val moviesViewAdapter = MoviesRecyclerAdapter(moviesListData)
+    private val moviesViewAdapter = MoviesRecyclerAdapter(moviesListData) {
+        viewModel.onPosterClicked(it)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidSupportInjection.inject(this)
         super.onCreate(savedInstanceState)
+
+        observeViewModelMoviesData()
+        observeNavigationEvent()
     }
 
     override fun onCreateView(
@@ -54,7 +61,6 @@ class PopularMoviesFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        observeViewModelMoviesData()
         viewModel.fragmentResumed()
     }
 
@@ -67,9 +73,16 @@ class PopularMoviesFragment : Fragment() {
         viewModel.moviesSharedFlow.onEach {
             moviesListData.clear()
             moviesListData.addAll(it)
+            println("Fragment successfully got movies data: ")
             moviesViewAdapter.notifyDataSetChanged()
-        }
-            .launchIn(lifecycleScope)
+        }.launchIn(lifecycleScope)
 
+    }
+
+    private fun observeNavigationEvent() {
+        viewModel.navigateMovieDetails.onEach {
+            if(it != "")
+            findNavController().navigate(R.id.MovieDetailFragment)
+        }.launchIn(lifecycleScope)
     }
 }

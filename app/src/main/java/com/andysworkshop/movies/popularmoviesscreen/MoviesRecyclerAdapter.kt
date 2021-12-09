@@ -8,7 +8,8 @@ import com.andysworkshop.movies.popularmoviesscreen.data.PopularMoviesUIData
 import com.squareup.picasso.Picasso
 
 class MoviesRecyclerAdapter(
-    private val values: List<PopularMoviesUIData>
+    private val values: List<PopularMoviesUIData>,
+    private val onItemClick: (String) -> Unit
 ) : RecyclerView.Adapter<MoviesRecyclerAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -31,6 +32,12 @@ class MoviesRecyclerAdapter(
 
     inner class ViewHolder(binding: PosterViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
-            val posterImageView = binding.posterImageView
+        val posterImageView = binding.posterImageView
+
+        init {
+            itemView.setOnClickListener {
+                onItemClick(values[adapterPosition].posterPath)
+            }
+        }
     }
 }

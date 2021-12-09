@@ -30,6 +30,7 @@ class ObservePopularMoviesDataUseCase @Inject constructor(
         store.popularMoviesData.onEach { popularMoviesRequestResult ->
             when (popularMoviesRequestResult) {
                 is PopularMoviesRequestResult.Success -> {
+                    println("Use case successfully got movies data")
                     popularMoviesRequestResult.value.map {
                         PopularMoviesUIData(
                             id = it.id,

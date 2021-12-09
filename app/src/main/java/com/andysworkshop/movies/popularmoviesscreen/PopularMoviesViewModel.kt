@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 class PopularMoviesViewModel @Inject constructor(
     private val requestPopularMoviesUseCase: IRequestPopularMoviesUseCase,
-    private val observePopularMoviesData: IObservePopularMoviesDataUseCase
+    observePopularMoviesData: IObservePopularMoviesDataUseCase
 ) : ViewModel() {
 
     private val _moviesSharedFlow = MutableSharedFlow<List<PopularMoviesUIData>>(
@@ -22,12 +22,16 @@ class PopularMoviesViewModel @Inject constructor(
         onBufferOverflow = BufferOverflow.DROP_OLDEST
     )
 
+    private val _navigateMovieDetails = MutableStateFlow("")
+
     val moviesSharedFlow: SharedFlow<List<PopularMoviesUIData>>
     get() {
         return _moviesSharedFlow
     }
 
-    fun fragmentResumed() {
+    val navigateMovieDetails: StateFlow<String> = _navigateMovieDetails
+
+    init {
         observePopularMoviesData.invoke(viewModelScope).onEach { popularMoviesUIDataResult ->
             when (popularMoviesUIDataResult) {
                 is PopularMoviesUIDataResult.Success -> {
@@ -41,10 +45,17 @@ class PopularMoviesViewModel @Inject constructor(
         }
             .flowOn(Dispatchers.IO)
             .launchIn(viewModelScope)
+    }
 
+    fun fragmentResumed() {
         viewModelScope.launch(Dispatchers.IO) {
             requestPopularMoviesUseCase.invoke(TOP_NUMBER)
         }
+    }
+
+    fun onPosterClicked(movieId: String) {
+        println("View model on poster clicked: $movieId")
+        _navigateMovieDetails.tryEmit(movieId)
     }
 
     companion object {
