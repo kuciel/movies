@@ -24,12 +24,22 @@ class PopularMoviesViewModel @Inject constructor(
 
     private val _navigateMovieDetails = MutableStateFlow("")
 
+    private val _moviesRequestError = MutableSharedFlow<String>(
+        extraBufferCapacity = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
+
     val moviesSharedFlow: SharedFlow<List<PopularMoviesUIData>>
         get() {
             return _moviesSharedFlow
         }
 
     val navigateMovieDetails: StateFlow<String> = _navigateMovieDetails
+
+    val moviesRequestError: SharedFlow<String>
+        get() {
+            return _moviesRequestError
+        }
 
     fun fragmentCreate() {
         observeMovieDetailData()
@@ -55,6 +65,7 @@ class PopularMoviesViewModel @Inject constructor(
                 }
                 is PopularMoviesUIDataResult.Error -> {
                     println("View model get movies data error: ${popularMoviesUIDataResult.message}")
+                    _moviesRequestError.tryEmit(popularMoviesUIDataResult.message)
                 }
             }
         }

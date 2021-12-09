@@ -5,13 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
-import com.andysworkshop.movies.R
 import com.andysworkshop.movies.databinding.FragmentMovieDetailsBinding
-import com.andysworkshop.movies.popularmoviesscreen.PopularMoviesViewModel
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -50,11 +48,9 @@ class MovieDetailFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.movieDetailSharedFlow.onEach {
-            println("Movie detail fragment got detail data: $it")
-            binding.titleTextview.text = it.title
-            binding.overviewTextview.text = it.overview
-        }.launchIn(lifecycleScope)
+
+        observeDetailData()
+        observeRequestError()
 
         arguments?.let {
             viewModel.onFragmentResumed(
@@ -66,5 +62,19 @@ class MovieDetailFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun observeDetailData() {
+        viewModel.movieDetailSharedFlow.onEach {
+            println("Movie detail fragment got detail data: $it")
+            binding.titleTextview.text = it.title
+            binding.overviewTextview.text = it.overview
+        }.launchIn(lifecycleScope)
+    }
+
+    private fun observeRequestError() {
+        viewModel.detailsRequestError.onEach {
+            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+        }.launchIn(lifecycleScope)
     }
 }
