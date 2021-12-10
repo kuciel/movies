@@ -33,7 +33,10 @@ class Network @Inject constructor(
             MovieDetailRequestResult.Success(
                 MovieDetailData(
                     overview = movieDetailsDto.overview,
-                    title = movieDetailsDto.title
+                    title = movieDetailsDto.title,
+                    homepage = movieDetailsDto.homepage,
+                    releaseDate = movieDetailsDto.releaseDate,
+                    voteAverage = movieDetailsDto.voteAverage.toDouble(),
                 )
             )
         } catch (error: Throwable) {

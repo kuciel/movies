@@ -53,9 +53,7 @@ class Store @Inject constructor(
     }
 
     override suspend fun requestMovieDetail(movieId: String) {
-        println("Store got movie detail request: $movieId")
         val movieDetails =  requestMovieDetailsUseCase.invoke(movieId)
-        println("Store got movie detail result: $movieDetails")
         _movieDetailsData.tryEmit(movieDetails)
     }
 

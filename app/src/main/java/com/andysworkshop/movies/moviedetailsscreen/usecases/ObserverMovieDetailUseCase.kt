@@ -34,7 +34,10 @@ class ObserverMovieDetailUseCase @Inject constructor(
                         MovieDetailUIDataResult.Success(
                             MovieDetailUIData(
                                 title = movieDetailRequestResult.value.title,
-                                overview = movieDetailRequestResult.value.overview
+                                overview = movieDetailRequestResult.value.overview,
+                                homepage = movieDetailRequestResult.value.homepage,
+                                releaseDate = movieDetailRequestResult.value.releaseDate,
+                                voteAverage = movieDetailRequestResult.value.voteAverage
                             )
                         )
                     )

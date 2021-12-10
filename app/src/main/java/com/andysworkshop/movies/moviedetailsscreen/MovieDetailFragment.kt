@@ -79,6 +79,9 @@ class MovieDetailFragment : Fragment() {
             println("Movie detail fragment got detail data: $it")
             binding.titleTextview.text = it.title
             binding.overviewTextview.text = it.overview
+            binding.textHomepage.text = it.homepage
+            binding.textReleaseDate.text = it.releaseDate
+            binding.textVoteAverage.text = it.voteAverage.toString()
         }.launchIn(lifecycleScope)
     }
 
