@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.andysworkshop.movies.R
 import com.andysworkshop.movies.databinding.FragmentMovieDetailsBinding
 import com.squareup.picasso.Picasso
@@ -39,6 +40,7 @@ class MovieDetailFragment : Fragment() {
     ): View? {
 
         _binding = FragmentMovieDetailsBinding.inflate(inflater, container, false)
+        binding.detailsScreen.setOnClickListener { viewModel.onScreenClick() }
         return binding.root
 
     }
@@ -53,6 +55,7 @@ class MovieDetailFragment : Fragment() {
 
         observeDetailData()
         observeRequestError()
+        observeNavigation()
 
         arguments?.let {
             viewModel.onFragmentResumed(
@@ -82,6 +85,12 @@ class MovieDetailFragment : Fragment() {
     private fun observeRequestError() {
         viewModel.detailsRequestError.onEach {
             Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+        }.launchIn(lifecycleScope)
+    }
+
+    private fun observeNavigation() {
+        viewModel.navigationFlow.onEach {
+            findNavController().popBackStack()
         }.launchIn(lifecycleScope)
     }
 }

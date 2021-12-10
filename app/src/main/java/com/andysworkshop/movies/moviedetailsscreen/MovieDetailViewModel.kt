@@ -38,6 +38,16 @@ class MovieDetailViewModel @Inject constructor(
             return _detailsRequestError
         }
 
+    private val _navigationFlow = MutableSharedFlow<Unit>(
+        extraBufferCapacity = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
+
+    val navigationFlow: SharedFlow<Unit>
+        get() {
+            return _navigationFlow
+        }
+
     private fun observeMovieDetailData() {
         observerMovieDetailUseCase.invoke(viewModelScope).onEach { movieDetailUIDataResult ->
             when (movieDetailUIDataResult) {
@@ -61,5 +71,9 @@ class MovieDetailViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             requestMovieDetailsUseCase.invoke(movieId)
         }
+    }
+
+    fun onScreenClick() {
+        _navigationFlow.tryEmit(Unit)
     }
 }
