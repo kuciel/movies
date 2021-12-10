@@ -9,7 +9,9 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.andysworkshop.movies.R
 import com.andysworkshop.movies.databinding.FragmentMovieDetailsBinding
+import com.squareup.picasso.Picasso
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -56,6 +58,11 @@ class MovieDetailFragment : Fragment() {
             viewModel.onFragmentResumed(
                 MovieDetailFragmentArgs.fromBundle(it).movieId
             )
+
+            Picasso.get()
+                .load(MovieDetailFragmentArgs.fromBundle(it).posterPath)
+                .placeholder(R.color.cardview_dark_background)
+                .into(binding.detailsBackground)
         }
     }
 

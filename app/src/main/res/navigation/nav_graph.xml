@@ -13,9 +13,16 @@
 
         <action
             android:id="@+id/action_PopularMoviesFragment_to_MovieDetailFragment"
-            app:destination="@id/MovieDetailFragment">
+            app:destination="@id/MovieDetailFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out">
             <argument
                 android:name="movieId"
+                app:argType="string" />
+            <argument
+                android:name="posterPath"
                 app:argType="string" />
         </action>
 
@@ -32,6 +39,10 @@
 
         <argument
             android:name="movieId"
+            app:argType="string" />
+
+        <argument
+            android:name="posterPath"
             app:argType="string" />
     </fragment>
 </navigation>

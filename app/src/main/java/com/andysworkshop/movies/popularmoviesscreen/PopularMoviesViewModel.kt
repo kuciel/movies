@@ -22,7 +22,7 @@ class PopularMoviesViewModel @Inject constructor(
         onBufferOverflow = BufferOverflow.DROP_OLDEST
     )
 
-    private val _navigateMovieDetails = MutableSharedFlow<String>(
+    private val _navigateMovieDetails = MutableSharedFlow<PopularMoviesUIData>(
         extraBufferCapacity = 1,
         onBufferOverflow = BufferOverflow.DROP_OLDEST
     )
@@ -37,7 +37,7 @@ class PopularMoviesViewModel @Inject constructor(
             return _moviesSharedFlow
         }
 
-    val navigateMovieDetails: SharedFlow<String> = _navigateMovieDetails
+    val navigateMovieDetails: SharedFlow<PopularMoviesUIData> = _navigateMovieDetails
 
     val moviesRequestError: SharedFlow<String>
         get() {
@@ -54,9 +54,9 @@ class PopularMoviesViewModel @Inject constructor(
         }
     }
 
-    fun onPosterClicked(movieId: String) {
-        println("View model on poster clicked: $movieId")
-        _navigateMovieDetails.tryEmit(movieId)
+    fun onPosterClicked(movieData: PopularMoviesUIData) {
+        println("View model on poster clicked: ${movieData.id}")
+        _navigateMovieDetails.tryEmit(movieData)
     }
 
     private fun observeMovieDetailData() {

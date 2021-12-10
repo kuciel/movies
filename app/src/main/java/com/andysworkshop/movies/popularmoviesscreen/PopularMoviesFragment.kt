@@ -89,9 +89,10 @@ class PopularMoviesFragment : Fragment() {
     }
 
     private fun observeNavigationEvent() {
-        viewModel.navigateMovieDetails.onEach {
-            if(it != "") {
-                val action = PopularMoviesFragmentDirections.actionPopularMoviesFragmentToMovieDetailFragment(it)
+        viewModel.navigateMovieDetails.onEach { movieData ->
+            movieData.let{
+                val action = PopularMoviesFragmentDirections
+                    .actionPopularMoviesFragmentToMovieDetailFragment(it.id, it.posterPath)
                 findNavController().navigate(action)
             }
         }.launchIn(lifecycleScope)
