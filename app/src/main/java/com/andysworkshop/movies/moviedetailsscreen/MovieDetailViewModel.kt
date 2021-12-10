@@ -48,6 +48,19 @@ class MovieDetailViewModel @Inject constructor(
             return _navigationFlow
         }
 
+
+    fun onFragmentResumed(movieId: String) {
+        observeMovieDetailData()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            requestMovieDetailsUseCase.invoke(movieId)
+        }
+    }
+
+    fun onScreenClick() {
+        _navigationFlow.tryEmit(Unit)
+    }
+
     private fun observeMovieDetailData() {
         observerMovieDetailUseCase.invoke(viewModelScope).onEach { movieDetailUIDataResult ->
             when (movieDetailUIDataResult) {
@@ -63,17 +76,5 @@ class MovieDetailViewModel @Inject constructor(
         }
             .flowOn(Dispatchers.IO)
             .launchIn(viewModelScope)
-    }
-
-    fun onFragmentResumed(movieId: String) {
-        observeMovieDetailData()
-
-        viewModelScope.launch(Dispatchers.IO) {
-            requestMovieDetailsUseCase.invoke(movieId)
-        }
-    }
-
-    fun onScreenClick() {
-        _navigationFlow.tryEmit(Unit)
     }
 }

@@ -1,6 +1,5 @@
 package com.andysworkshop.movies.networking
 
-import android.graphics.Movie
 import com.andysworkshop.movies.domain.data.MovieData
 import com.andysworkshop.movies.domain.data.MovieDetailData
 import com.andysworkshop.movies.domain.data.MovieDetailRequestResult
