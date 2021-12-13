@@ -18,6 +18,8 @@
         android:id="@+id/posterImageView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/cardview_dark_background"
+        android:minHeight="550dp"
         android:adjustViewBounds="true"
         tools:layout_editor_absoluteX="165dp"
         tools:layout_editor_absoluteY="86dp"

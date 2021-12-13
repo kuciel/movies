@@ -17,6 +17,13 @@ class PopularMoviesViewModel @Inject constructor(
     private val observePopularMoviesData: IObservePopularMoviesDataUseCase
 ) : ViewModel() {
 
+    init {
+        observeMovieDetailData()
+        viewModelScope.launch(Dispatchers.IO) {
+            requestPopularMoviesUseCase.invoke(TOP_NUMBER)
+        }
+    }
+
     private val _moviesSharedFlow = MutableSharedFlow<List<PopularMoviesUIData>>(
         extraBufferCapacity = 1,
         onBufferOverflow = BufferOverflow.DROP_OLDEST
@@ -43,16 +50,6 @@ class PopularMoviesViewModel @Inject constructor(
         get() {
             return _moviesRequestError
         }
-
-    fun fragmentCreate() {
-        observeMovieDetailData()
-    }
-
-    fun fragmentResumed() {
-        viewModelScope.launch(Dispatchers.IO) {
-            requestPopularMoviesUseCase.invoke(TOP_NUMBER)
-        }
-    }
 
     fun onPosterClicked(movieData: PopularMoviesUIData) {
         println("View model on poster clicked: ${movieData.id}")

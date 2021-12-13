@@ -2,9 +2,7 @@ package com.andysworkshop.movies.popularmoviesscreen
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
-import com.andysworkshop.movies.R
 import com.andysworkshop.movies.databinding.PosterViewBinding
 import com.andysworkshop.movies.popularmoviesscreen.data.PopularMoviesUIData
 import com.squareup.picasso.Picasso
@@ -25,8 +23,7 @@ class MoviesRecyclerAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
-        Picasso.get().load(item.posterPath).placeholder(R.color.cardview_dark_background)
-            .into(holder.posterImageView)
+        Picasso.get().load(item.posterPath).into(holder.posterImageView)
     }
 
     override fun getItemCount(): Int {

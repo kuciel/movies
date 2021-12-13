@@ -1,6 +1,7 @@
 package com.andysworkshop.movies.popularmoviesscreen
 
 import android.os.Bundle
+import android.os.Parcelable
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +12,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.andysworkshop.movies.R
 import com.andysworkshop.movies.databinding.FragmentPopularMoviesBinding
 import com.andysworkshop.movies.popularmoviesscreen.data.PopularMoviesUIData
 import dagger.android.support.AndroidSupportInjection
@@ -29,6 +29,8 @@ class PopularMoviesFragment : Fragment() {
 
     private var _binding: FragmentPopularMoviesBinding? = null
 
+    private var recyclerViewState: Parcelable? = null
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -44,7 +46,6 @@ class PopularMoviesFragment : Fragment() {
         AndroidSupportInjection.inject(this)
         super.onCreate(savedInstanceState)
 
-        viewModel.fragmentCreate()
         observeViewModelMoviesData()
         observeNavigationEvent()
         observeViewModelMoviesRequestError()
@@ -54,20 +55,18 @@ class PopularMoviesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         _binding = FragmentPopularMoviesBinding.inflate(inflater, container, false)
         val view = binding.root
         view.layoutManager = LinearLayoutManager(context)
+        (view.layoutManager as LinearLayoutManager).onRestoreInstanceState(recyclerViewState)
         view.adapter = moviesViewAdapter
         return view
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.fragmentResumed()
-    }
-
     override fun onDestroyView() {
+        _binding?.root?.layoutManager?.let{
+            recyclerViewState = it.onSaveInstanceState()
+        }
         super.onDestroyView()
         _binding = null
     }
@@ -90,7 +89,7 @@ class PopularMoviesFragment : Fragment() {
 
     private fun observeNavigationEvent() {
         viewModel.navigateMovieDetails.onEach { movieData ->
-            movieData.let{
+            movieData.let {
                 val action = PopularMoviesFragmentDirections
                     .actionPopularMoviesFragmentToMovieDetailFragment(it.id, it.posterPath)
                 findNavController().navigate(action)
