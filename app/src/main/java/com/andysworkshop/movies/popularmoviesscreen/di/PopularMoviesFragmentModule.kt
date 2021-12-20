@@ -7,7 +7,7 @@ import dagger.android.ContributesAndroidInjector
 
 @Module
 abstract class PopularMoviesFragmentModule {
-    @ContributesAndroidInjector (modules = [(ScreensModule::class)])
+    @ContributesAndroidInjector ()
     abstract fun contributeFragmentAndroidInjector(): PopularMoviesFragment
 
 }

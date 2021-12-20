@@ -12,6 +12,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.andysworkshop.movies.R
 import com.andysworkshop.movies.databinding.FragmentMovieDetailsBinding
+import com.andysworkshop.movies.moviedetailsscreen.di.DaggerMovieDetailComponent
+import com.andysworkshop.movies.moviedetailsscreen.di.MovieDetailComponent
+import com.andysworkshop.movies.moviedetailsscreen.di.MovieDetailsViewModelFactoryModule
+import com.andysworkshop.movies.popularmoviesscreen.di.DaggerPopularMoviesComponent
+import com.andysworkshop.movies.popularmoviesscreen.di.PopularMoviesViewModelFactoryModule
 import com.squareup.picasso.Picasso
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.coroutines.flow.launchIn
@@ -48,6 +53,11 @@ class MovieDetailFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AndroidSupportInjection.inject(this)
+
+        val component = DaggerMovieDetailComponent.builder().movieDetailsViewModelFactoryModule(
+            MovieDetailsViewModelFactoryModule()
+        ).build()
+        component.inject(this)
     }
 
     override fun onResume() {
