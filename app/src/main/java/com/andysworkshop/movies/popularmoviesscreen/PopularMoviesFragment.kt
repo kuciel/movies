@@ -12,11 +12,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.andysworkshop.movies.MoviesApplication
 import com.andysworkshop.movies.databinding.FragmentPopularMoviesBinding
 import com.andysworkshop.movies.popularmoviesscreen.data.PopularMoviesUIData
 import com.andysworkshop.movies.popularmoviesscreen.di.DaggerPopularMoviesComponent
 import com.andysworkshop.movies.popularmoviesscreen.di.PopularMoviesViewModelFactoryModule
-import dagger.android.support.AndroidSupportInjection
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
@@ -45,11 +45,12 @@ class PopularMoviesFragment : Fragment() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidSupportInjection.inject(this)
+        //AndroidSupportInjection.inject(this)
 
         val component = DaggerPopularMoviesComponent.builder().popularMoviesViewModelFactoryModule(
             PopularMoviesViewModelFactoryModule()
-        ).build()
+        ).appComponent((activity?.application as MoviesApplication).appComponent)
+            .build()
         component.inject(this)
         super.onCreate(savedInstanceState)
 
