@@ -12,7 +12,7 @@ import javax.inject.Singleton
 
 @Module
 class PopularMoviesViewModelFactoryModule {
-    @Singleton
+    @PopularMoviesScope
     @Provides
     fun provideViewModelFactory(
         requestPopularMoviesUseCase: IRequestPopularMoviesUseCase,

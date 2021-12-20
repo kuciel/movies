@@ -5,16 +5,14 @@ import androidx.lifecycle.ViewModelProvider
 import com.andysworkshop.movies.moviedetailsscreen.MovieDetailViewModel
 import com.andysworkshop.movies.moviedetailsscreen.usecases.IObserverMovieDetailUseCase
 import com.andysworkshop.movies.moviedetailsscreen.usecases.IRequestMovieDetailUseCase
-import com.andysworkshop.movies.popularmoviesscreen.di.PopularMoviesViewModelFactoryModule
 import dagger.Module
 import dagger.Provides
 import javax.inject.Inject
-import javax.inject.Singleton
 
 @Module
 class MovieDetailsViewModelFactoryModule {
-    @Singleton
     @Provides
+    @MovieDetailScope
     fun provideViewModelFactory(
         requestMovieDetailsUseCase: IRequestMovieDetailUseCase,
         observerMovieDetailUseCase: IObserverMovieDetailUseCase
