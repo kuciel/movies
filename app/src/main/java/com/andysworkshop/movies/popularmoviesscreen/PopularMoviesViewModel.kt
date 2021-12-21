@@ -25,7 +25,7 @@ class PopularMoviesViewModel @Inject constructor(
     }
 
     private val _moviesSharedFlow = MutableSharedFlow<List<PopularMoviesUIData>>(
-        extraBufferCapacity = 1,
+        replay = 1,
         onBufferOverflow = BufferOverflow.DROP_OLDEST
     )
 
