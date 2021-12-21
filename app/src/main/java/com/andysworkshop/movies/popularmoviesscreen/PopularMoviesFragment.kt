@@ -45,14 +45,14 @@ class PopularMoviesFragment : Fragment() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        //AndroidSupportInjection.inject(this)
+        super.onCreate(savedInstanceState)
 
         val component = DaggerPopularMoviesComponent.builder().popularMoviesViewModelFactoryModule(
             PopularMoviesViewModelFactoryModule()
         ).appComponent((activity?.application as MoviesApplication).appComponent)
             .build()
         component.inject(this)
-        super.onCreate(savedInstanceState)
+
 
         observeViewModelMoviesData()
         observeNavigationEvent()

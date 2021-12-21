@@ -7,7 +7,7 @@ import javax.inject.Singleton
 
 @PopularMoviesScope
 @Component(
-    modules = [PopularMoviesViewModelFactoryModule::class],
+    modules = [PopularMoviesViewModelFactoryModule::class, PopularMoviesUseCasesModule::class],
     dependencies = [AppComponent::class]
 )
 interface PopularMoviesComponent {

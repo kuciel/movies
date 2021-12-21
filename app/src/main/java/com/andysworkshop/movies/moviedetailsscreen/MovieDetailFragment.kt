@@ -49,7 +49,6 @@ class MovieDetailFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        AndroidSupportInjection.inject(this)
 
         val component = DaggerMovieDetailComponent.builder().movieDetailsViewModelFactoryModule(
             MovieDetailsViewModelFactoryModule()
