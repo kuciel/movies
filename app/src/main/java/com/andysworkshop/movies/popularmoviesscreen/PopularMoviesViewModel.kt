@@ -1,5 +1,6 @@
 package com.andysworkshop.movies.popularmoviesscreen
 
+import android.os.Parcelable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.andysworkshop.movies.popularmoviesscreen.data.PopularMoviesUIData
@@ -39,6 +40,8 @@ class PopularMoviesViewModel @Inject constructor(
         onBufferOverflow = BufferOverflow.DROP_OLDEST
     )
 
+    private var _recyclerViewPosition: Int = 0
+
     val moviesSharedFlow: SharedFlow<List<PopularMoviesUIData>>
         get() {
             return _moviesSharedFlow
@@ -51,9 +54,19 @@ class PopularMoviesViewModel @Inject constructor(
             return _moviesRequestError
         }
 
-    fun onPosterClicked(movieData: PopularMoviesUIData) {
+    val recyclerViewPosition: Int
+        get() {
+            return _recyclerViewPosition
+        }
+
+    fun onPosterClicked(movieData: PopularMoviesUIData, position: Int) {
         println("View model on poster clicked: ${movieData.id}")
+        _recyclerViewPosition = position
         _navigateMovieDetails.tryEmit(movieData)
+    }
+
+    fun saveRecyclerPosition(position: Int) {
+        _recyclerViewPosition = position
     }
 
     private fun observeMovieDetailData() {

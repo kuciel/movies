@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.andysworkshop.movies.MoviesApplication
 import com.andysworkshop.movies.databinding.FragmentPopularMoviesBinding
 import com.andysworkshop.movies.popularmoviesscreen.data.PopularMoviesUIData
@@ -31,8 +32,6 @@ class PopularMoviesFragment : Fragment() {
 
     private var _binding: FragmentPopularMoviesBinding? = null
 
-    private var recyclerViewState: Parcelable? = null
-
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -40,9 +39,12 @@ class PopularMoviesFragment : Fragment() {
     private val viewModel: PopularMoviesViewModel by viewModels { viewModelFactory }
 
     private val moviesListData: MutableList<PopularMoviesUIData> = mutableListOf()
-    private val moviesViewAdapter = MoviesRecyclerAdapter(moviesListData) {
-        viewModel.onPosterClicked(it)
+    private val moviesViewAdapter = MoviesRecyclerAdapter(moviesListData) { movieData, pos ->
+        viewModel.onPosterClicked(movieData, pos)
+        shouldSavePositionOnViewDestroy = false
     }
+
+    private var shouldSavePositionOnViewDestroy = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,17 +68,31 @@ class PopularMoviesFragment : Fragment() {
         _binding = FragmentPopularMoviesBinding.inflate(inflater, container, false)
         val view = binding.root
         view.layoutManager = LinearLayoutManager(context)
-        (view.layoutManager as LinearLayoutManager).onRestoreInstanceState(recyclerViewState)
+        (view.layoutManager as LinearLayoutManager).scrollToPosition(viewModel.recyclerViewPosition)
         view.adapter = moviesViewAdapter
+
         return view
     }
 
     override fun onDestroyView() {
-        _binding?.root?.layoutManager?.let{
-            recyclerViewState = it.onSaveInstanceState()
+        if(shouldSavePositionOnViewDestroy) {
+            saveRecyclerPositionInViewModel()
         }
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun saveRecyclerPositionInViewModel() {
+        _binding?.root?.layoutManager?.let {
+            val view = binding.root
+            var position =
+                (view.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
+            if (position == RecyclerView.NO_POSITION) {
+                position =
+                    (view.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+            }
+            viewModel.saveRecyclerPosition(position)
+        }
     }
 
     private fun observeViewModelMoviesData() {
