@@ -1,5 +1,6 @@
 package com.andysworkshop.movies.moviedetailsscreen
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,12 +11,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.andysworkshop.movies.MoviesApplication
 import com.andysworkshop.movies.R
 import com.andysworkshop.movies.databinding.FragmentMovieDetailsBinding
-import com.andysworkshop.movies.moviedetailsscreen.di.DaggerMovieDetailComponent
-import com.andysworkshop.movies.moviedetailsscreen.di.MovieDetailsViewModelFactoryModule
 import com.squareup.picasso.Picasso
+import dagger.android.support.AndroidSupportInjection
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
@@ -47,14 +46,10 @@ class MovieDetailFragment : Fragment() {
 
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onAttach(context: Context) {
+        AndroidSupportInjection.inject(this)
 
-        val component = DaggerMovieDetailComponent.builder().movieDetailsViewModelFactoryModule(
-            MovieDetailsViewModelFactoryModule()
-        ).appComponent((activity?.application as MoviesApplication).appComponent)
-            .build()
-        component.inject(this)
+        super.onAttach(context)
     }
 
     override fun onResume() {
