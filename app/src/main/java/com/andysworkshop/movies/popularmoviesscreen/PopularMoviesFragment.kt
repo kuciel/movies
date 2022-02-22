@@ -1,7 +1,7 @@
 package com.andysworkshop.movies.popularmoviesscreen
 
+import android.content.Context
 import android.os.Bundle
-import android.os.Parcelable
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,11 +13,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.andysworkshop.movies.MoviesApplication
 import com.andysworkshop.movies.databinding.FragmentPopularMoviesBinding
 import com.andysworkshop.movies.popularmoviesscreen.data.PopularMoviesUIData
-import com.andysworkshop.movies.popularmoviesscreen.di.DaggerPopularMoviesComponent
-import com.andysworkshop.movies.popularmoviesscreen.di.PopularMoviesViewModelFactoryModule
+import dagger.android.support.AndroidSupportInjection
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
@@ -49,16 +47,14 @@ class PopularMoviesFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val component = DaggerPopularMoviesComponent.builder().popularMoviesViewModelFactoryModule(
-            PopularMoviesViewModelFactoryModule()
-        ).appComponent((activity?.application as MoviesApplication).appComponent)
-            .build()
-        component.inject(this)
-
-
         observeViewModelMoviesData()
         observeNavigationEvent()
         observeViewModelMoviesRequestError()
+    }
+
+    override fun onAttach(context: Context) {
+        AndroidSupportInjection.inject(this)
+        super.onAttach(context)
     }
 
     override fun onCreateView(

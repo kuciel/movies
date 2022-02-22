@@ -8,15 +8,14 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import javax.inject.Inject
 
-//class MoviesApplication: Application(), HasAndroidInjector {
-    class MoviesApplication: Application() {
+class MoviesApplication: Application(), HasAndroidInjector {
 
-//    @Inject
-//    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
+    @Inject
+    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
 
-//    override fun androidInjector(): AndroidInjector<Any> {
-//        return dispatchingAndroidInjector
-//    }
+    override fun androidInjector(): AndroidInjector<Any> {
+        return dispatchingAndroidInjector
+    }
     lateinit var appComponent: AppComponent
 
     override fun onCreate() {
