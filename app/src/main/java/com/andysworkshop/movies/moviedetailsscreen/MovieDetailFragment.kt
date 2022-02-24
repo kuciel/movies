@@ -13,8 +13,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.andysworkshop.movies.R
 import com.andysworkshop.movies.databinding.FragmentMovieDetailsBinding
+import com.andysworkshop.movies.moviedetailsscreen.di.MovieDetailScope
 import com.squareup.picasso.Picasso
-import dagger.android.support.AndroidSupportInjection
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
@@ -22,8 +23,10 @@ import javax.inject.Inject
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
+@AndroidEntryPoint
 class MovieDetailFragment : Fragment() {
 
+    @MovieDetailScope
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
@@ -47,7 +50,6 @@ class MovieDetailFragment : Fragment() {
     }
 
     override fun onAttach(context: Context) {
-        AndroidSupportInjection.inject(this)
 
         super.onAttach(context)
     }

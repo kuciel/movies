@@ -15,7 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.andysworkshop.movies.databinding.FragmentPopularMoviesBinding
 import com.andysworkshop.movies.popularmoviesscreen.data.PopularMoviesUIData
-import dagger.android.support.AndroidSupportInjection
+import com.andysworkshop.movies.popularmoviesscreen.di.PopularMoviesScope
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
@@ -23,8 +24,10 @@ import javax.inject.Inject
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
+@AndroidEntryPoint
 class PopularMoviesFragment : Fragment() {
 
+    @PopularMoviesScope
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
@@ -53,7 +56,6 @@ class PopularMoviesFragment : Fragment() {
     }
 
     override fun onAttach(context: Context) {
-        AndroidSupportInjection.inject(this)
         super.onAttach(context)
     }
 

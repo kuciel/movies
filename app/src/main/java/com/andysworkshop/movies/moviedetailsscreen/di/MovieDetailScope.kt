@@ -1,7 +1,8 @@
 package com.andysworkshop.movies.moviedetailsscreen.di
 
+import javax.inject.Qualifier
 import javax.inject.Scope
 
-@Scope
+@Qualifier
 @Retention
 annotation class MovieDetailScope

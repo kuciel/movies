@@ -6,8 +6,11 @@ import com.andysworkshop.movies.popularmoviesscreen.usecases.ObservePopularMovie
 import com.andysworkshop.movies.popularmoviesscreen.usecases.RequestPopularMoviesUseCase
 import dagger.Binds
 import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.FragmentComponent
 
 @Module
+@InstallIn(FragmentComponent::class)
 abstract class PopularMoviesUseCasesModule {
     @Binds
     abstract fun bindRequestPopularMoviesUseCase(

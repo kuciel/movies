@@ -7,9 +7,13 @@ import com.andysworkshop.movies.moviedetailsscreen.usecases.IObserverMovieDetail
 import com.andysworkshop.movies.moviedetailsscreen.usecases.IRequestMovieDetailUseCase
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.android.components.FragmentComponent
 import javax.inject.Inject
 
 @Module
+@InstallIn(FragmentComponent::class)
 class MovieDetailsViewModelFactoryModule {
     @Provides
     @MovieDetailScope

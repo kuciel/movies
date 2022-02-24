@@ -7,10 +7,14 @@ import com.andysworkshop.movies.popularmoviesscreen.usecases.IObservePopularMovi
 import com.andysworkshop.movies.popularmoviesscreen.usecases.IRequestPopularMoviesUseCase
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.android.components.FragmentComponent
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Module
+@InstallIn(FragmentComponent::class)
 class PopularMoviesViewModelFactoryModule {
     @PopularMoviesScope
     @Provides
